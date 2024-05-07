@@ -59,7 +59,7 @@ SECTION .data
     sum:    dd 0
     mean:   dd 0
 
-;This area is usually used for initializing arrays.
+;This area is usually used for initializing arrays or uninitialized variables.
 SECTION .bss
 
     ;res means to reserve.
