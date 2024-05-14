@@ -1,13 +1,13 @@
 
 # It's week 7. Oh no.
 
-Here's some example code and some basic explanations/resources for this awful, awful week.
+Here's some example code and some basic explanations/resources for this awful, awful week. My code certainly isn't perfect, but it'll serve as reference.
 
 ## Basics
 Assembly is a low-level language that communicates with the cpu. In these programs, we use NASM and 32-bit registers along with the FPU. 
 
 ### Organization
-There are 3 sections in Assembly.
+There are 3 main sections in our assembly.
 
 `.data` - Used to declare initialized variables.
 
@@ -22,8 +22,7 @@ Let's dissect a line.
 
 `add esp, 4`
 
-The first words define what action is being taken. In this case, we're adding some values. The first operand, `esp`, is the destination, and the second operand, 4, is the source. So, this line is adding 4 to `esp`. Different versions of Assembly may have destination and source swapped. Fun.
-
+The first words define what action is being taken. In this case, we're adding some values. The first operand, `esp`, is the destination, and the second operand, 4, is the source. So, this line is adding 4 to `esp`. Other versions of assembly may have destination and source swapped. Fun.
 
 Now a small code chunk.
 ```
@@ -31,9 +30,9 @@ push dword name
 push dword ninput
 call scanf
 ```
-Here, we're calling the function scanf and passing some values into it. The `push` is the action to move the `name` variable into the function as a parameter. The `dword` describes the size of the variable, in this case 32-bits. 
+Here, we're calling the function scanf and passing some arugments into it. The `push` is the action to move the `name` variable into the function as a parameter. The `dword` describes the size of the variable, in this case 32-bits. 
 
-The order matters! In c, we would call this function using `scanf(ninput, name);`, but Assembly is so ass-backwards that we have to feed the variables in reverse! So, push name, then ninput, then call scanf.
+The order matters! In c, we would call this function using `scanf(ninput, name);`, but assembly is so ass-backwards that we have to feed the function arguments in reverse!
 
 One more.
 
@@ -42,7 +41,7 @@ main:
 ...
 .welcome:
 ```
-These are labels. They are both technically the same thing and are the result of naming conventions in Assembly. The first line generally refers to function labels and the second line refers to labels within functions.
+These are labels. They are both technically the same thing and are the result of naming conventions in assembly. The first line generally refers to function labels and the second line refers to labels within functions.
 We want labels so that we can `jmp` to them. 
 
 What's the FPU? We'll get to that later.
@@ -75,7 +74,17 @@ https://web.stanford.edu/class/cs107/resources/x86-64-reference.pdf
 ## Program 2
 This program sums and counts float integers between [e,π] and [17, 41].
 
-This program introduces the FPU. Here's an excellent introduction to what it is, how it works, and a function reference guide: https://www.website.masmforum.com/tutorials/fptute/index.html#intro
+This program introduces the FPU. Here's an excellent introduction to what it is, how it works, and a function reference guide: https://www.website.masmforum.com/tutorials/fptute/index.html
+
+If you don't like reading, I'll summarize.
+
+![alt text](https://www.website.masmforum.com/tutorials/fptute/fpufigs/fpuregs.gif)
+
+The FPU is made up of stack of eight 80-bit registers. You can imagine the stack as a revolver. When we load new values into the stack, you can imagine rotating the barrel clockwise by one so that our new value is loaded into the top compartment. When we want to pop a value off the stack, we do the opposite. The value stored in the top compartment gets deleted and the barrel turns counterclockwise by one.
+
+It is important that the programmer knows how many slots in the stack are being used. When the stack is full, the next available slot to use would be the oldest because it has rotated back to being the top compartment. It is also vital to know what values are stored relative to the top of the stack (referred to as st0 in the code). Or cheat and use finit to reinitialize/clear the stack. 
+
+Some other things to note. The FPU can handle integer, floating point, and packed BCD (students won't use this one, though). The instructions are not interchangeable--don't use an integer instruction with floating points. The FPU floating points use the ieee standard, so expect some inaccuracies when numbers get big.
 
 Here's another resource for quickly referencing FPU functions: https://redirect.cs.umbc.edu/courses/undergraduate/313/fall04/burt_katz/lectures/Lect12/floatingpoint.html
 
@@ -85,6 +94,6 @@ This program generates and prints 50 random numbers between [0, 1). You will be 
 This program introduces linking and using external functions from other files. 
 
 ## Program 4
-This program finds the nth value of the Fibonacci sequence either recursively or iteratively.
+This program finds the nth value of the Fibonacci sequence either recursively or iteratively based on user choice.
 
-This program introduces the creation and calling of Assembly functions (outside of main).
+This program introduces the creation and calling of assembly functions (outside of main).
